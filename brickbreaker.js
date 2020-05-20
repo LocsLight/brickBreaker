@@ -6,8 +6,8 @@ let x = canvas1.width/2;
 let y = canvas1.height-30;
 
 //variables de déplacement de la balle
-let dx = 1;
-let dy = -1;
+let dx = 3;
+let dy = -3;
 let ballRadius = 10;
 
 //variable de la pagaie
@@ -17,8 +17,28 @@ let paddle1X = (canvas1.width-paddle1Width)/2
 
 //variables des commande
 let rightPressed = false;
-let leftPresses = false;
+let leftPressed = false;
 
+document.addEventListener("keydown",keyDownHandler,false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e){
+    if(e.keyCode == 39){
+        rightPressed =true
+    }
+    if(e.keyCode == 37){
+        leftPressed =true
+    }
+}
+
+function keyUpHandler(e){
+    if(e.keyCode == 39){
+        rightPressed =false
+    }
+    if(e.keyCode == 37){
+        leftPressed =false
+    }
+}
 
 function drawBall(){
     context.beginPath();
@@ -36,7 +56,7 @@ function drawPaddle(){
 }
 function draw(){
     context.clearRect(0, 0, canvas1.width, canvas1.height);
-    drawPaddle()
+    drawPaddle();
     drawBall();
     if(x + dx > canvas1.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
@@ -44,9 +64,14 @@ function draw(){
     if(y + dy > canvas1.height - ballRadius || y + dy < ballRadius) {
     dy = -dy;
     }
+    if(rightPressed && paddle1X < canvas1.width-paddle1Width) {
+        paddle1X += 7;
+    }
+    else if(leftPressed && paddle1X > 0) {
+        paddle1X -= 7;
+    }
     x+= dx;
     y+= dy;
 }
-document.addEventListener("keydown",keyDownHandler,false)
-document.addEventListener()
 setInterval(draw,10);
+
