@@ -58,14 +58,22 @@ function draw(){
     context.clearRect(0, 0, canvas1.width, canvas1.height);
     drawPaddle();
     drawBall();
+    // make the ball bounce on the side walls
     if(x + dx > canvas1.width - ballRadius || x + dx < ballRadius) {
         dx = -dx;
     }
+    // change la direction de la balle quand elle tape un mur ou la pagais
     if(y + dy < ballRadius) {
     dy = -dy;
     }else if(y + dy > canvas1.height - ballRadius){
-        alert("GAME OVER")
+        if(x > paddle1X && x < paddle1X + paddle1Width){
+            dy = -dy
+        }else{
+        alert("GAME OVER");
+        document.location.reload();
+        }
     }
+    //mouvement du paddle  
     if(rightPressed && paddle1X < canvas1.width-paddle1Width) {
         paddle1X += 7;
     }
