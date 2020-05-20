@@ -1,13 +1,30 @@
 const canvas1 = document.getElementById("game1Canvas");
 const context = canvas1.getContext("2d");
 
+//variables des bricks
+let brickRowCount = 3;
+let brickColumnCount = 5;
+let brickWidth = 75;
+let brickHeight = 20;
+let brickPadding = 10;
+let brickOffsetTop = 30;
+let brickOffsetLeft = 30;
+
+let bricks=[];
+for(let c=0; c<brickColumnCount; c++){
+    bricks[c]=[];
+    for(let r=0; r<brickRowCount; r++){
+        bricks[c][r] = {x: 0, y:0};
+    }
+}
+
 //variables de position
 let x = canvas1.width/2;
 let y = canvas1.height-30;
 
 //variables de déplacement de la balle
-let dx = 3;
-let dy = -3;
+let dx = 1.5;
+let dy = -1.5;
 let ballRadius = 10;
 
 //variable de la pagaie
@@ -39,7 +56,21 @@ function keyUpHandler(e){
         leftPressed =false
     }
 }
-
+function drawBricks() {
+    for(let c=0; c<brickColumnCount; c++) {
+        for(let r=0; r<brickRowCount; r++) {
+            const brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+            const brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+            bricks[c][r].x = 0;
+            bricks[c][r].y = 0;
+            context.beginPath();
+            context.rect(brickX, brickY, brickWidth, brickHeight);
+            context.fillStyle = "#0095DD";
+            context.fill();
+            context.closePath();
+        }
+    }
+}
 function drawBall(){
     context.beginPath();
     context.arc(x,y,ballRadius,0,Math.PI*2);
@@ -56,6 +87,7 @@ function drawPaddle(){
 }
 function draw(){
     context.clearRect(0, 0, canvas1.width, canvas1.height);
+    drawBricks();
     drawPaddle();
     drawBall();
     // make the ball bounce on the side walls
@@ -75,10 +107,10 @@ function draw(){
     }
     //mouvement du paddle  
     if(rightPressed && paddle1X < canvas1.width-paddle1Width) {
-        paddle1X += 7;
+        paddle1X += 5;
     }
     else if(leftPressed && paddle1X > 0) {
-        paddle1X -= 7;
+        paddle1X -= 5;
     }
     x+= dx;
     y+= dy;
